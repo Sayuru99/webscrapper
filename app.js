@@ -5,13 +5,15 @@ const fs = require('fs');
 // anounymous function
 // we have to wait for this function to get data from the website. thats why this function async
 (async () => {
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch(); 
+    // if you want to open browser insert these code line inside paranthesis `{headless: false}`  example - launch({headless: false})
     const page = await browser.newPage()
     // below using go to function in puppeteer
     await page.goto("https://www.helakuru.lk/esana/news/");
     // getting screenshot for test
     await page.screenshot({path: "screenshot.png"});
 
+    // clicking notification enable button
     const cancel = await page.$('.close');
     await cancel.click();
 
@@ -34,13 +36,10 @@ const fs = require('fs');
           document.querySelectorAll('#news_item_container > div > div > div.col-8 > div > p'),
           p => p.innerText,
         );
-  
+          
         return [results];
       });
 
-    //   const text = await news
-    // console.log("Text is: " + text)
-
-    console.log(news);
+    console.log(news[0][0]);
     await browser.close();
 })();
