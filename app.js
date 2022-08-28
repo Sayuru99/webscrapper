@@ -5,7 +5,7 @@ const fs = require('fs');
 // anounymous function
 // we have to wait for this function to get data from the website. thats why this function async
 (async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: true });
   // if you want to open browser insert these code line inside paranthesis `{headless: false}`  example - launch({headless: false})
   const page = await browser.newPage()
   // below using go to function in puppeteer
@@ -36,16 +36,22 @@ const fs = require('fs');
       document.querySelectorAll('#news_item_container > div > div > div.col-8 > div > p'),
       p => p.innerText,
     );
+    const thumb = Array.from(
+      document.querySelectorAll('#news_item_container > div > div > div.col-4.pr-0 > div > div > img'),
+      img => img.src,
+    );
 
-    return [results];
+    return [{results, thumb}];
   });
 
   //console.log(news);
 
   // save news data into json file
   for (let i = 0; i < news.length; i++) {
-    console.log(news[i]);
-    fs.writeFile('./src/news.json', JSON.stringify(news[i]), err => {
+    x = news[i]
+    console.log(x);
+    x = news[i]
+    fs.writeFile('news.json', JSON.stringify(news[i]), err => {
       if (err) {
         console.error(err);
       }
